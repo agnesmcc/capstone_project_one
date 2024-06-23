@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import db, connect_db
+from models import db, connect_db, User, Recipe, List, ListsRecipes, UsersFavoritesRecipes
 
 CURR_USER_KEY = "curr_user"
 
