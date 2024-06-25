@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <div id="recipes" class="row">
+  {% for recipe in recipes %}
+    <div class="recipe-item col-md-4">
+      <div class="text-center"> <!-- Center the title -->
+        <span>{{ recipe.title }}</span>
+      </div>
+      <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}" class="img-fluid"> <!-- Make the image responsive -->
+    </div>
+  {% endfor %}
+  </div>
+
+  {% endblock %}

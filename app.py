@@ -21,3 +21,11 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
+
+@app.route('/')
+def homepage():
+    """Show homepage with links to recipes and lists."""
+
+    recipes = Recipe.query.all()
+
+    return render_template('home.html', recipes=recipes)
