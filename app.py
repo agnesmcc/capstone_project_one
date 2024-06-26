@@ -122,3 +122,10 @@ def logout():
     do_logout()
     flash("Logged out successfully.", "success")
     return redirect("/")
+
+@app.route('/lists')
+def show_lists():
+    """Show all lists."""
+
+    lists = List.query.all()
+    return render_template('lists/lists.html', lists=lists)

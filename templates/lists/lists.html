@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="bg"></div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <ul class="list-group no-hover" id="messages">
+        <li class="list-group-item">
+            {% for list in lists %}
+              {{list.title}}
+            {% endfor %}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}
