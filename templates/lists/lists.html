@@ -3,15 +3,18 @@
 {% block content %}
 
   <div class="bg"></div>
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <ul class="list-group no-hover" id="messages">
-        <li class="list-group-item">
-            {% for list in lists %}
-              {{list.title}}
-            {% endfor %}
-        </li>
-      </ul>
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <ul class="list-group no-hover" id="lists">
+          <li class="list-group-item">
+              {% for list in lists %}
+                {{list.title}}
+              {% endfor %}
+          </li>
+        </ul>
+        <br>
+        <a href="/lists/new" class="btn btn-primary btn-lg btn-block">Create a new list</a>
+      </div>
     </div>
   </div>
 

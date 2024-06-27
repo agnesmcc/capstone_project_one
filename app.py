@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
-from forms import UserAddForm, LoginForm, UserEditForm
+from forms import UserAddForm, LoginForm, UserEditForm, ListAddForm
 from models import db, connect_db, User, Recipe, List, ListsRecipes, UsersFavoritesRecipes
 
 CURR_USER_KEY = "curr_user"
@@ -129,3 +129,25 @@ def show_lists():
 
     lists = List.query.all()
     return render_template('lists/lists.html', lists=lists)
+
+@app.route('/lists/new', methods=["GET", "POST"])
+def new_list():
+    """Show form to add list and process form."""
+
+    if not g.user:
+        return redirect('/signup')
+        
+    form = ListAddForm()
+
+    if form.validate_on_submit():
+        list = List(
+            username=g.user.username,
+            title=form.title.data, 
+            description=form.description.data
+        )
+        db.session.add(list)
+        db.session.commit()
+        return redirect(f"/lists")
+
+    else:
+        return render_template('lists/new_list.html', form=form)

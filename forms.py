@@ -24,3 +24,9 @@ class LoginForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6)])
+
+class ListAddForm(FlaskForm):
+    """Form for adding lists."""
+
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description')
