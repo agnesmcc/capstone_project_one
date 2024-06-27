@@ -6,11 +6,13 @@
     <div class="row justify-content-center">
       <div class="col-md-6 text-center">
         <ul class="list-group no-hover" id="lists">
-          <li class="list-group-item">
-              {% for list in lists %}
+          
+            {% for list in lists %}
+              <li class="list-group-item">
                 {{list.title}}
-              {% endfor %}
-          </li>
+              </li>
+            {% endfor %}
+          
         </ul>
         <br>
         <a href="/lists/new" class="btn btn-primary btn-lg btn-block">Create a new list</a>
