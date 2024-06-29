@@ -138,6 +138,8 @@ def new_list():
     if not g.user:
         return redirect('/signup')
 
+    lists = List.query.all()
+
     form = ListAddForm()
 
     if form.validate_on_submit():
@@ -151,4 +153,4 @@ def new_list():
         return redirect(f"/lists")
 
     else:
-        return render_template('lists/new_list.html', form=form)
+        return render_template('lists/new_list.html', form=form, lists=lists)
