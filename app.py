@@ -32,8 +32,9 @@ def homepage():
         return redirect('/signup')
     
     recipes = Recipe.query.all()
+    lists = List.query.all()
 
-    return render_template('home.html', recipes=recipes)
+    return render_template('home.html', recipes=recipes, lists=lists)
 
 @app.before_request
 def add_user_to_g():
@@ -136,7 +137,7 @@ def new_list():
 
     if not g.user:
         return redirect('/signup')
-        
+
     form = ListAddForm()
 
     if form.validate_on_submit():

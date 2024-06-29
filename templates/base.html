@@ -23,10 +23,12 @@
             Current list
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
+            {% for list in lists %}
+              <li><a class="dropdown-item" href="#">{{list.title}}</a></li>
+            {% endfor %}
           </ul>
         </li>
+        <li class="nav-link">{{lists[0].title}}</li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
