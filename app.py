@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
@@ -154,3 +154,30 @@ def new_list():
 
     else:
         return render_template('lists/new_list.html', form=form, lists=lists)
+
+
+@app.route('/lists/add', methods=["POST"])
+def add_recipe_to_list():
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    list_title = request.json["listTitle"]
+    recipe_id = request.json["recipeId"]
+
+    list = List.query.filter_by(title=list_title).first_or_404()
+
+    if list.username != g.user.username:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    list_recipes = ListsRecipes(
+        list_id=list.id,
+        recipe_id=recipe_id
+    )
+
+    db.session.add(list_recipes)
+    db.session.commit()
+
+    return jsonify({'message': 'success'})
