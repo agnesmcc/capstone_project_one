@@ -171,6 +171,25 @@ def new_list():
         return render_template('lists/new_list.html', form=form, lists=lists)
 
 
+@app.route('/lists/delete/<int:list_id>')
+def delete_list(list_id):
+    """Delete list."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    list = List.query.get_or_404(list_id)
+
+    if list.username != g.user.username:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    db.session.delete(list)
+    db.session.commit()
+
+    return redirect("/lists")
+
 @app.route('/lists/add', methods=["POST"])
 def add_recipe_to_list():
 
