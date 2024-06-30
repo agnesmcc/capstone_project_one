@@ -264,3 +264,17 @@ def my_account():
         flash("Invalid credentials.", 'danger')
 
     return render_template('users/my_account.html', user=g.user, form=form, lists=lists)
+
+@app.route('/my-account/delete')
+def delete_user():
+    """Delete user."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    db.session.delete(g.user)
+    db.session.commit()
+
+    do_logout()
+    return redirect("/signup")
