@@ -237,3 +237,30 @@ def delete_recipe_from_list(list_id, recipe_id):
     db.session.commit()
 
     return redirect(f"/lists/{list_id}")
+
+@app.route('/my-account', methods=["GET", "POST"])
+def my_account():
+    """Show user account page."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    lists = List.query.all()
+
+    form = UserEditForm(obj=g.user)
+
+    if form.validate_on_submit():
+        user = User.authenticate(g.user.username,
+                                 form.password.data)
+
+        if user:
+            g.user.username = form.username.data
+            g.user.email = form.email.data
+            db.session.commit()
+            flash("Account updated.", "success")
+            return redirect("/my-account")
+
+        flash("Invalid credentials.", 'danger')
+
+    return render_template('users/my_account.html', user=g.user, form=form, lists=lists)

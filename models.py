@@ -120,7 +120,7 @@ class List(db.Model):
 
     username = db.Column(
         db.Text,
-        db.ForeignKey('users.username', ondelete='CASCADE'),
+        db.ForeignKey('users.username', ondelete='CASCADE', onupdate='CASCADE'),
         nullable=False,
     )
 
