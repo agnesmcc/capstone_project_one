@@ -215,3 +215,25 @@ def add_recipe_to_list():
     db.session.commit()
 
     return jsonify({'message': 'success'})
+
+
+@app.route('/lists/delete_recipe/<int:list_id>/<int:recipe_id>')
+def delete_recipe_from_list(list_id, recipe_id):
+    """Delete recipe from list."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    list = List.query.get_or_404(list_id)
+
+    if list.username != g.user.username:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    list_recipe = ListsRecipes.query.filter_by(list_id=list_id, recipe_id=recipe_id).first_or_404()
+
+    db.session.delete(list_recipe)
+    db.session.commit()
+
+    return redirect(f"/lists/{list_id}")
