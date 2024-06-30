@@ -131,6 +131,21 @@ def show_lists():
     lists = List.query.all()
     return render_template('lists/lists.html', lists=lists)
 
+@app.route('/lists/<int:list_id>')
+def show_list(list_id):
+    """Show list details."""
+
+    lists = List.query.all()
+    list = List.query.get_or_404(list_id)
+
+    if list.username != g.user.username:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    recipes = list.recipes
+
+    return render_template('lists/list.html', list=list, lists=lists, recipes=recipes)
+
 @app.route('/lists/new', methods=["GET", "POST"])
 def new_list():
     """Show form to add list and process form."""

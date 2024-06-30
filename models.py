@@ -124,6 +124,8 @@ class List(db.Model):
         nullable=False,
     )
 
+    recipes = db.relationship('Recipe', secondary='lists_recipes', backref='lists')
+
     def __repr__(self):
         return f"<List #{self.id}: {self.title}, {self.username}>"
 
