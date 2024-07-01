@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="text-center">
+    <h2>Your Favorites</h2>
+  </div>
+
+  {% for recipe in recipes %}
+
+    <div class="recipe-item">
+      <div class="text-center"> <!-- Center the title -->
+        <span>{{ recipe.title }}</span>
+      </div>
+      <img src="{{ recipe.image_url }}" data-recipeId="{{ recipe.id }}" alt="{{ recipe.title }}" class="img-fluid"> <!-- Make the image responsive -->
+      <a href="/lists/delete_recipe/{{list.id}}/{{recipe.id}}" class="btn btn-outline-danger btn-sm">Delete</a>
+    </div>
+
+  {% endfor %}
+
+{% endblock %}

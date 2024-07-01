@@ -124,6 +124,13 @@ def logout():
     flash("Logged out successfully.", "success")
     return redirect("/")
 
+@app.route('/favorites')
+def show_favorites():
+    """Show all favorites."""
+
+    favorites = g.user.favorites
+    return render_template('favorites/favorites.html', recipes=favorites)
+
 @app.route('/lists')
 def show_lists():
     """Show all lists."""

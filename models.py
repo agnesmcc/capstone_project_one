@@ -53,6 +53,8 @@ class User(db.Model):
         nullable=False,
     )
 
+    favorites = db.relationship('Recipe', secondary='users_favorites_recipes', backref='user')
+
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
