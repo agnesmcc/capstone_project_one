@@ -34,7 +34,7 @@ def homepage():
     recipes = Recipe.query.all()
     lists = List.query.all()
 
-    return render_template('home.html', recipes=recipes, lists=lists)
+    return render_template('home.html', recipes=recipes, lists=lists, user=g.user)
 
 @app.before_request
 def add_user_to_g():
@@ -129,7 +129,7 @@ def show_favorites():
     """Show all favorites."""
 
     favorites = g.user.favorites
-    return render_template('favorites/favorites.html', recipes=favorites)
+    return render_template('favorites/favorites.html', recipes=favorites, user=g.user)
 
 @app.route('/favorites/add', methods=["POST"])
 def add_favorite():
@@ -165,7 +165,7 @@ def show_list(list_id):
 
     recipes = list.recipes
 
-    return render_template('lists/list.html', list=list, lists=lists, recipes=recipes)
+    return render_template('lists/list.html', list=list, lists=lists, recipes=recipes, user=g.user)
 
 @app.route('/lists/new', methods=["GET", "POST"])
 def new_list():

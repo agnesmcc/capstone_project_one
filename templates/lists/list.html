@@ -13,7 +13,7 @@
       <img src="{{ recipe.image_url }}" data-recipeId="{{ recipe.id }}" alt="{{ recipe.title }}" class="img-fluid"> <!-- Make the image responsive -->
       <a href="/lists/delete_recipe/{{list.id}}/{{recipe.id}}" class="btn btn-outline-danger btn-sm">Delete</a>
     </div>
-    <i class="far fa-heart favorite-selector" data-recipeId="{{ recipe.id }}"></i>
+    <i class="far fa-heart {% if recipe in user.favorites %}fas{% else %}far{% endif %} favorite-selector" data-recipeId="{{ recipe.id }}"></i>
 
   {% endfor %}
 
