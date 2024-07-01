@@ -145,6 +145,20 @@ def add_favorite():
     db.session.commit()
     return redirect("/favorites")
 
+@app.route('/favorites/remove', methods=["POST"])
+def remove_favorite():
+    """Remove favorite."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    recipe_id = request.json['recipeId']
+    recipe = Recipe.query.get(recipe_id)
+    g.user.favorites.remove(recipe)
+    db.session.commit()
+    return redirect("/favorites")
+
 @app.route('/lists')
 def show_lists():
     """Show all lists."""
