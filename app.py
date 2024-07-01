@@ -131,6 +131,20 @@ def show_favorites():
     favorites = g.user.favorites
     return render_template('favorites/favorites.html', recipes=favorites)
 
+@app.route('/favorites/add', methods=["POST"])
+def add_favorite():
+    """Add favorite."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    recipe_id = request.json['recipeId']
+    recipe = Recipe.query.get(recipe_id)
+    g.user.favorites.append(recipe)
+    db.session.commit()
+    return redirect("/favorites")
+
 @app.route('/lists')
 def show_lists():
     """Show all lists."""
