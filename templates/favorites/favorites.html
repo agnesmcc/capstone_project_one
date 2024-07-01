@@ -13,8 +13,8 @@
         <span>{{ recipe.title }}</span>
       </div>
       <img src="{{ recipe.image_url }}" data-recipeId="{{ recipe.id }}" alt="{{ recipe.title }}" class="img-fluid"> <!-- Make the image responsive -->
-      <i class="far fa-heart favorite-selector" data-recipeId="{{ recipe.id }}"></i>
     </div>
+    <i class="far fa-heart favorite-selector" data-recipeId="{{ recipe.id }}"></i>
 
   {% endfor %}
 
