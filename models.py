@@ -113,8 +113,7 @@ class List(db.Model):
 
     title = db.Column(
         db.Text,
-        nullable=False,
-        unique=True,
+        nullable=False
     )
 
     description = db.Column(
