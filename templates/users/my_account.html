@@ -4,21 +4,20 @@
 
   <div class="row justify-content-md-center">
     <div class="col-md-4">
-      <h2 class="join-message">Edit Your Profile.</h2>
+      <h2 class="join-message text-center">Edit Your Profile.</h2>
       <form method="POST" id="user_form">
         {{ form.hidden_tag() }}
 
         {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label.text }}</label>
-            {% for error in field.errors %}
-              <span class="text-danger">{{ error }}</span>
-            {% endfor %}
+        <div class="form-group row">
+          <label for="{{ field.id }}" class="col-sm-3 col-form-label">{{ field.label.text }}</label>
+          <div class="col-sm-9">
             {{ field(placeholder=field.label.text, class="form-control") }}
           </div>
-        {% endfor %}
+        </div>
+      {% endfor %}
 
-        <p>To confirm changes, enter your password:</p>
+        <br><div>To confirm changes, enter your password:</div>
         {% if form.password.errors %}
           {% for error in form.password.errors %}
             <span class="text-danger">
@@ -26,11 +25,9 @@
           </span>
           {% endfor %}
         {% endif %}
-        <div class="form-group">
-          <label for="{{ form.password.id_for_label }}">{{ form.password.label.text }}</label>
-          {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
-        </div>
-
+          
+        {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+      
         <div class="edit-btn-area">
           <button class="btn btn-success">Edit this user!</button>
           <a href="/" class="btn btn-outline-secondary">Cancel</a>
