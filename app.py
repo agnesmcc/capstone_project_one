@@ -95,6 +95,15 @@ def signup():
             )
             db.session.commit()
 
+            default_list = List(
+                title="My List",
+                description="My first list",
+                username=user.username
+            )
+
+            db.session.add(default_list)
+            db.session.commit()
+
         except IntegrityError:
             flash("Username already taken", 'danger')
             return render_template('users/signup.html', form=form)
