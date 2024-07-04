@@ -37,6 +37,9 @@ def authorize_user(func):
 def get_three_random_recipes():
     return Recipe.query.order_by(db.func.random()).limit(3).all()
 
+def get_my_lists():
+    return List.query.filter(List.username == g.user.username).all()
+
 @app.route('/')
 def homepage():
     """Show homepage with links to recipes and lists."""
@@ -45,7 +48,7 @@ def homepage():
         return redirect('/signup')
     
     recipes = get_three_random_recipes()
-    lists = List.query.all()
+    lists = get_my_lists()
 
     return render_template('home.html', recipes=recipes, lists=lists, user=g.user)
 
@@ -152,7 +155,7 @@ def show_favorites():
     """Show all favorites."""
 
     favorites = g.user.favorites
-    lists = List.query.all()
+    lists = get_my_lists()
     return render_template('favorites/favorites.html', recipes=favorites, user=g.user, lists=lists)
 
 @app.route('/favorites/add', methods=["POST"])
@@ -182,7 +185,7 @@ def remove_favorite():
 def show_lists():
     """Show all lists."""
 
-    lists = List.query.all()
+    lists = get_my_lists()
     return render_template('lists/lists.html', lists=lists)
 
 @app.route('/lists/<int:list_id>')
@@ -190,7 +193,7 @@ def show_lists():
 def show_list(list_id):
     """Show list details."""
 
-    lists = List.query.all()
+    lists = get_my_lists()
     list = List.query.get_or_404(list_id)
 
     if list.username != g.user.username:
@@ -206,7 +209,7 @@ def show_list(list_id):
 def new_list():
     """Show form to add list and process form."""
 
-    lists = List.query.all()
+    lists = get_my_lists()
 
     form = ListAddForm()
 
@@ -287,7 +290,7 @@ def delete_recipe_from_list(list_id, recipe_id):
 def my_account():
     """Show user account page."""
 
-    lists = List.query.all()
+    lists = get_my_lists()
 
     form = UserEditForm(obj=g.user)
 
