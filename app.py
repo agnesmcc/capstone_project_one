@@ -129,7 +129,8 @@ def show_favorites():
     """Show all favorites."""
 
     favorites = g.user.favorites
-    return render_template('favorites/favorites.html', recipes=favorites, user=g.user)
+    lists = List.query.all()
+    return render_template('favorites/favorites.html', recipes=favorites, user=g.user, lists=lists)
 
 @app.route('/favorites/add', methods=["POST"])
 def add_favorite():
