@@ -20,7 +20,7 @@ configuration.api_key['apiKeyScheme'] = os.environ["API_KEY"]
 with spoonacular.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = spoonacular.RecipesApi(api_client)
-    number = 3
+    number = 30
     try:
         # Search Recipes
         api_response = api_instance.search_recipes(number=number)
