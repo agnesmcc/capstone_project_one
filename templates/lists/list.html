@@ -12,6 +12,7 @@
         </div>
         <i class="far fa-heart {% if recipe in user.favorites %}fas{% else %}far{% endif %} favorite-selector" data-recipeId="{{ recipe.id }}"></i>
         <span>{{ recipe.title }}</span>
+        <a href="/lists/delete_recipe/{{list.id}}/{{recipe.id}}" class="btn btn-outline-danger btn-sm">Delete</a>
       </div>
     {% endfor %}
   </div>
