@@ -1,4 +1,5 @@
 import os
+from functools import wraps
 
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -23,6 +24,15 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
+
+def authorize_user(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not g.user:
+            flash("Access unauthorized.", "danger")
+            return redirect("/")
+        return func(*args, **kwargs)
+    return wrapper
 
 @app.route('/')
 def homepage():
@@ -125,6 +135,7 @@ def logout():
     return redirect("/")
 
 @app.route('/favorites')
+@authorize_user
 def show_favorites():
     """Show all favorites."""
 
@@ -133,12 +144,9 @@ def show_favorites():
     return render_template('favorites/favorites.html', recipes=favorites, user=g.user, lists=lists)
 
 @app.route('/favorites/add', methods=["POST"])
+@authorize_user
 def add_favorite():
     """Add favorite."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     recipe_id = request.json['recipeId']
     recipe = Recipe.query.get(recipe_id)
@@ -147,12 +155,9 @@ def add_favorite():
     return redirect("/favorites")
 
 @app.route('/favorites/remove', methods=["POST"])
+@authorize_user
 def remove_favorite():
     """Remove favorite."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     recipe_id = request.json['recipeId']
     recipe = Recipe.query.get(recipe_id)
@@ -161,6 +166,7 @@ def remove_favorite():
     return redirect("/favorites")
 
 @app.route('/lists')
+@authorize_user
 def show_lists():
     """Show all lists."""
 
@@ -168,6 +174,7 @@ def show_lists():
     return render_template('lists/lists.html', lists=lists)
 
 @app.route('/lists/<int:list_id>')
+@authorize_user
 def show_list(list_id):
     """Show list details."""
 
@@ -183,11 +190,9 @@ def show_list(list_id):
     return render_template('lists/list.html', list=list, lists=lists, recipes=recipes, user=g.user)
 
 @app.route('/lists/new', methods=["GET", "POST"])
+@authorize_user
 def new_list():
     """Show form to add list and process form."""
-
-    if not g.user:
-        return redirect('/signup')
 
     lists = List.query.all()
 
@@ -208,12 +213,9 @@ def new_list():
 
 
 @app.route('/lists/delete/<int:list_id>')
+@authorize_user
 def delete_list(list_id):
     """Delete list."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     list = List.query.get_or_404(list_id)
 
@@ -227,11 +229,8 @@ def delete_list(list_id):
     return redirect("/lists")
 
 @app.route('/lists/add', methods=["POST"])
+@authorize_user
 def add_recipe_to_list():
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     list_title = request.json["listTitle"]
     recipe_id = request.json["recipeId"]
@@ -254,12 +253,9 @@ def add_recipe_to_list():
 
 
 @app.route('/lists/delete_recipe/<int:list_id>/<int:recipe_id>')
+@authorize_user
 def delete_recipe_from_list(list_id, recipe_id):
     """Delete recipe from list."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     list = List.query.get_or_404(list_id)
 
@@ -275,12 +271,9 @@ def delete_recipe_from_list(list_id, recipe_id):
     return redirect(f"/lists/{list_id}")
 
 @app.route('/my-account', methods=["GET", "POST"])
+@authorize_user
 def my_account():
     """Show user account page."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     lists = List.query.all()
 
@@ -302,12 +295,9 @@ def my_account():
     return render_template('users/my_account.html', user=g.user, form=form, lists=lists)
 
 @app.route('/my-account/delete')
+@authorize_user
 def delete_user():
     """Delete user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
 
     db.session.delete(g.user)
     db.session.commit()
