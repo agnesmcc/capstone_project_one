@@ -7,17 +7,15 @@
   </div>
 
   <div id="recipes" class="row">
-  {% for recipe in recipes %}
-    <div class="col-md-4">
-      <div class="recipe-item">
-        <div class="text-center"> <!-- Center the title -->
-          <span>{{ recipe.title }}</span>
+    {% for recipe in recipes %}
+      <div class="col-md-4">
+        <div class="recipe-item">
+          <img src="{{ recipe.image_url }}" data-recipeId="{{ recipe.id }}" alt="{{ recipe.title }}" class="img-fluid"> <!-- Make the image responsive -->
         </div>
-        <img src="{{ recipe.image_url }}" data-recipeId="{{ recipe.id }}" alt="{{ recipe.title }}" class="img-fluid"> <!-- Make the image responsive -->
+        <i class="far fa-heart {% if recipe in user.favorites %}fas{% else %}far{% endif %} favorite-selector" data-recipeId="{{ recipe.id }}"></i>
+        <span>{{ recipe.title }}</span>
       </div>
-      <i class="far fa-heart {% if recipe in user.favorites %}fas{% else %}far{% endif %} favorite-selector" data-recipeId="{{ recipe.id }}"></i>
-    </div>
-  {% endfor %}
+    {% endfor %}
   </div>
 
 {% endblock %}
