@@ -34,6 +34,9 @@ def authorize_user(func):
         return func(*args, **kwargs)
     return wrapper
 
+def get_three_random_recipes():
+    return Recipe.query.order_by(db.func.random()).limit(3).all()
+
 @app.route('/')
 def homepage():
     """Show homepage with links to recipes and lists."""
@@ -41,7 +44,7 @@ def homepage():
     if not g.user:
         return redirect('/signup')
     
-    recipes = Recipe.query.all()
+    recipes = get_three_random_recipes()
     lists = List.query.all()
 
     return render_template('home.html', recipes=recipes, lists=lists, user=g.user)
