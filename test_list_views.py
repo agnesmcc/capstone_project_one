@@ -5,7 +5,7 @@
 #    FLASK_ENV=production python -m unittest test_list_views.py
 
 
-import os
+import os, json
 from unittest import TestCase
 
 from models import db, User, List, Recipe, ListsRecipes, UsersFavoritesRecipes
@@ -128,7 +128,7 @@ class ListViewTestCase(TestCase):
                 "recipeId": recipe_id}, follow_redirects=True)
             
             self.assertEqual(resp.status_code, 200)
-            self.assertIn(b'{"message":"success"}', resp.data)
+            self.assertEqual({'message': 'success'}, json.loads(resp.data))
 
 
     def test_delete_list(self):
