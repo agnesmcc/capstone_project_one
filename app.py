@@ -250,7 +250,7 @@ def add_recipe_to_list():
     list_title = request.json["listTitle"]
     recipe_id = request.json["recipeId"]
 
-    list = List.query.filter_by(title=list_title).first_or_404()
+    list = List.query.filter_by(title=list_title, username=g.user.username).first_or_404()
 
     if list.username != g.user.username:
         flash("Access unauthorized.", "danger")
