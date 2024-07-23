@@ -4,19 +4,26 @@ from functools import wraps
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+from dotenv import load_dotenv
 
 from forms import UserAddForm, LoginForm, UserEditForm, ListAddForm
 from models import db, connect_db, User, Recipe, List, ListsRecipes, UsersFavoritesRecipes
 
 CURR_USER_KEY = "curr_user"
 
+load_dotenv()
+
 app = Flask(__name__)
 
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///tender'))
+db_username = os.environ.get('DB_USERNAME', 'postgres')
+db_password = os.environ.get('DB_PASSWORD', '')
+db_host = os.environ.get('DB_HOST', 'localhost')
+db_port = os.environ.get('DB_PORT', '5432')
+db_uri = f'postgresql://{db_username}:{db_password}@{db_host}:{db_port}/tender'
 
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -24,6 +31,8 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
+
+db.create_all()
 
 def authorize_user(func):
     @wraps(func)
