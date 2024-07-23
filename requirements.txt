@@ -1,4 +1,4 @@
-annotated-types==0.7.0.2
+annotated-types==0.7.0
 appnope==0.1.0.2
 asttokens==2.4.1
 backcall==0.1.0.2
