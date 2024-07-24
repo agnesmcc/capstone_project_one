@@ -1,3 +1,4 @@
+annotated-types==0.7.0
 bcrypt==4.2.0
 blinker==1.8.2
 click==8.1.7
@@ -13,8 +14,14 @@ Jinja2==3.1.4
 MarkupSafe==2.1.5
 packaging==24.1
 psycopg2==2.9.9
+pydantic==2.8.2
+pydantic_core==2.20.1
+python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+six==1.16.0
+-e git+https://github.com/ddsky/spoonacular-api-clients@0362a953fff937772339d11ad4c1388f292e27be#egg=spoonacular&subdirectory=python
 SQLAlchemy==2.0.31
 typing_extensions==4.12.2
+urllib3==2.0.7
 Werkzeug==3.0.3
 WTForms==3.1.2
