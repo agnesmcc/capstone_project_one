@@ -27,7 +27,8 @@ from app import app
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 class UserModelTestCase(TestCase):
@@ -42,10 +43,14 @@ class UserModelTestCase(TestCase):
             pass
         finally:
             db.session.close()
+            self.app.pop()
 
     def setUp(self):
         """Create test client, add sample data."""
 
+        self.app = app.app_context()
+        self.app.push()
+        
         User.query.delete()
 
 

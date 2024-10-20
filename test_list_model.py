@@ -27,7 +27,8 @@ from app import app
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 class ListModelTestCase(TestCase):
@@ -41,9 +42,13 @@ class ListModelTestCase(TestCase):
             pass
         finally:
             db.session.close()
+            self.app.pop()
 
     def setUp(self):
         """Create test client, add sample data."""
+
+        self.app = app.app_context()
+        self.app.push()
 
         User.query.delete()
         List.query.delete()
@@ -58,10 +63,10 @@ class ListModelTestCase(TestCase):
                                     password="testuser")
 
         self.testuser2 = User.signup(first_name="Test",
-                                     last_name="User",
-                                     username="testuser2",
-                                     email="test2@test",
-                                     password="testuser2")
+                                    last_name="User",
+                                    username="testuser2",
+                                    email="test2@test",
+                                    password="testuser2")
         
         self.recipe = Recipe(
             source_id="12345",
@@ -69,12 +74,13 @@ class ListModelTestCase(TestCase):
             image_url="https://example.com/image.jpg"
         )
 
+        
         db.session.add_all([self.testuser, self.testuser2, self.recipe])
         db.session.commit()
 
     def test_list_model(self):
         """Does basic model work?"""
-
+        
         l = List(
             title="Test List",
             description="Test Description",
